@@ -1,0 +1,95 @@
+---
+title: "P(ID) for n = `r params$n_graph`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    social: menu
+    source_code: embed
+params:
+  n_graph: 10
+  n_samp: 10
+---
+
+```{r setup, include=FALSE}
+library(dygraphs)
+library(quantmod)
+library(flexdashboard)
+
+root <- rprojroot::find_root(".git/config")
+r_dir <- file.path(root, "r")
+cpp_dir <- file.path(root, "cpp")
+invisible(lapply(list.files(r_dir, full.names = TRUE), source))
+invisible(lapply(list.files(cpp_dir, full.names = TRUE), sourceCpp))
+
+# grid experiment full
+n_graph <- params$n_graph
+res <- replicate(length(gspec), NULL)
+
+for (i in seq_along(gspec)) {
+  
+  grid <- gspec[[i]]$grid
+  var_params <- names(grid)
+  grid[["n"]] <- n_graph
+  df <- prob_id_grid(adj_gen = gspec[[i]]$adj, cfd_gen = gspec[[i]]$cfd, 
+                     grid = grid, nsamp = params$n_samp)
+  res[[i]][["raw"]] <- df
+  if (length(grid) == 2L) {
+    
+    by_args <- c("params1", "n", "adj", "cfd")
+  } else by_args <- c("params1", "params2", "n", "adj", "cfd")
+  res[[i]][["smry"]] <- df[, lapply(.SD, mean), by = by_args]
+  res[[i]][["vis"]] <- vis_prob_id(res[[i]][["smry"]], var_params)
+}
+x <- latex2exp::TeX("my title $\\alpha = \\beta$")
+
+adj_labs <- list(Gnp = latex2exp::TeX("$G(n, p)$"),
+                 unif = latex2exp::TeX("Uniform"),
+                 scale_free = latex2exp::TeX("$BA(n, a, \\alpha)$"))
+cfd_labs <- list(Gnq = latex2exp::TeX("$G(n, q)$"),
+                        prunning = latex2exp::TeX("IP(q)"))
+```
+
+Row
+-------------------------------------
+    
+### `r attr(adj_labs[[1]], "latex")` + `r attr(cfd_labs[[1]], "latex")`
+    
+```{r}
+res[[1]]$vis
+```
+ 
+### `r attr(adj_labs[[1]], "latex")` + `r attr(cfd_labs[[2]], "latex")`
+    
+```{r}
+res[[2]]$vis
+``` 
+
+Row
+-------------------------------------
+    
+### `r attr(adj_labs[[2]], "latex")` + `r attr(cfd_labs[[1]], "latex")`
+    
+```{r}
+res[[3]]$vis
+```
+    
+### `r attr(adj_labs[[2]], "latex")` + `r attr(cfd_labs[[2]], "latex")`
+
+```{r}
+res[[4]]$vis
+```
+
+Row
+-------------------------------------
+    
+### `r attr(adj_labs[[3]], "latex")` + `r attr(cfd_labs[[1]], "latex")`
+    
+```{r}
+res[[5]]$vis
+```
+    
+### `r attr(adj_labs[[3]], "latex")` + `r attr(cfd_labs[[2]], "latex")`
+
+```{r}
+res[[6]]$vis
+```

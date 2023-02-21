@@ -26,7 +26,11 @@ auid_cov <- function(fspec, nsamp) {
   fexp
 
   # Area under Identification
+<<<<<<< HEAD
   auid <- fexp[, lapply(.SD, mean), by = c("n", "adj", "cfd"),
+=======
+  auid <- fexp[, lapply(.SD, mean, na.rm = TRUE), by = c("n", "adj", "cfd"),
+>>>>>>> gh-pages
                .SDcols = c("ncon", "b_id", "g_id")]
   auid <- melt(auid, id.vars = c("n", "adj", "cfd"))
   
