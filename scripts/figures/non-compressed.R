@@ -9,8 +9,8 @@ invisible(lapply(list.files(cpp_dir, full.names = TRUE), sourceCpp))
 for (n_graph in c(5, 10, 15, 20)) {
   
   rmarkdown::render(
-    file.path("scripts", "figures", "widgets.Rmd"), 
-    params = list(n_graph = n_graph, n_samp = 10),
+    file.path("scripts", "figures", "dash.Rmd"), 
+    params = list(n_graph = n_graph, n_samp = 10^4),
     output_file = file.path(root, "dashboards", 
                             paste0("dashboard_", n_graph, ".html"))
   )
