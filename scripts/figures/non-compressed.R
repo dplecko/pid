@@ -15,5 +15,3 @@ for (n_graph in c(5, 10, 15, 20)) {
                             paste0("dashboard_", n_graph, ".html"))
   )
 }
-
-

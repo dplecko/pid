@@ -41,7 +41,12 @@ ggplot(
   scale_fill_discrete(labels = c("Back-door", "ID Algorithm"),
                        name = "ID Approach") +
   theme(
-    legend.position = "bottom"
+    legend.position = "bottom",
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 14),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 16),
+    strip.text = element_text(size = 12)
   )
 
 ggsave(file.path("paper", "figures", "verify-dp.png"),

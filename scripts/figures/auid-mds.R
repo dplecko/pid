@@ -26,11 +26,7 @@ auid_cov <- function(fspec, nsamp) {
   fexp
 
   # Area under Identification
-<<<<<<< HEAD
-  auid <- fexp[, lapply(.SD, mean), by = c("n", "adj", "cfd"),
-=======
   auid <- fexp[, lapply(.SD, mean, na.rm = TRUE), by = c("n", "adj", "cfd"),
->>>>>>> gh-pages
                .SDcols = c("ncon", "b_id", "g_id")]
   auid <- melt(auid, id.vars = c("n", "adj", "cfd"))
   
@@ -51,7 +47,12 @@ auid_cov <- function(fspec, nsamp) {
     scale_color_discrete(labels = c("0-ID", "Back-door", "ID Algorithm"),
                          name = "ID Approach") +
     theme_bw() + theme(
-      legend.position = "bottom"
+      legend.position = "bottom",
+      axis.text = element_text(size = 12),
+      axis.title = element_text(size = 14),
+      legend.text = element_text(size = 14),
+      legend.title = element_text(size = 16),
+      strip.text = element_text(size = 12)
     )
   
   # Back-door Coverage
@@ -64,7 +65,12 @@ auid_cov <- function(fspec, nsamp) {
     xlab("Graph Size") + ylab("Backdoor Coverage") +
     geom_point() +
     theme(
-      legend.position = "bottom"
+      legend.position = "bottom",
+      axis.text = element_text(size = 12),
+      axis.title = element_text(size = 14),
+      legend.text = element_text(size = 14),
+      legend.title = element_text(size = 16),
+      strip.text = element_text(size = 12)
     ) +
     scale_color_discrete(name = "Adjacency",
                          labels = c(Gnp = latex2exp::TeX("$G(n, p)$"),
@@ -80,14 +86,14 @@ auid_cov <- function(fspec, nsamp) {
 nsamp <- 10^4
 pgen <- auid_cov(fspec, nsamp)
 ggsave(file.path("paper", "figures", "auid_gen.png"), plot = pgen[[1]],
-       width = 10, height = 6)
+       width = 12, height = 8)
 
 ggsave(file.path("paper", "figures", "cov_gen.png"), plot = pgen[[2]],
-       width = 10, height = 6)
+       width = 12, height = 8)
 
 pdps <- auid_cov(fspec_dps, nsamp)
 ggsave(file.path("paper", "figures", "auid_dps.png"), plot = pdps[[1]],
-       width = 10, height = 6)
+       width = 12, height = 8)
 
 ggsave(file.path("paper", "figures", "cov_dps.png"), plot = pdps[[2]],
-       width = 10, height = 6)
+       width = 12, height = 8)
