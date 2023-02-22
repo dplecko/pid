@@ -87,7 +87,7 @@ gen_graph <- function(adj = c("Gnp", "unif", "scale_free"),
     cfd.mat <- adj.mat
     cfd.mat[,] <- 0
     g <- list(adj = adj.mat, cfd = cfd.mat)
-    uc_idx <- rbinom(nrow(adj.mat), 1, prob = params$p_prune)
+    uc_idx <- rbinom(nrow(adj.mat), 1, prob = params$q)
     return(proj(g, uc_idx))
   } else if (cfd == "Gnq") {
     

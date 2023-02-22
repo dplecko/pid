@@ -59,7 +59,7 @@ check_bd <- function(g, x, y, show_plot = FALSE) {
 
 pid_single <- function(g, type = "fast") {
   
-  if (is.null(g) | is.scalar(g$adj)) return(c(NA, NA, NA))
+  if (is.null(g) | is.scalar(g$adj)) return(c(FALSE, FALSE, FALSE))
   
   # xy <- sort(sample.int(nrow(g$adj), size = 2L, replace = FALSE))
   x <- sample.int(nrow(g$adj)-1, size = 1L) # xy[1]

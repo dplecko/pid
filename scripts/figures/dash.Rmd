@@ -7,7 +7,7 @@ output:
     source_code: embed
 params:
   n_graph: 10
-  n_samp: 10
+  n_samp: 10000
 ---
 
 ```{r setup, include=FALSE}
@@ -25,6 +25,7 @@ invisible(lapply(list.files(cpp_dir, full.names = TRUE), sourceCpp))
 n_graph <- params$n_graph
 res <- replicate(length(gspec), NULL)
 
+set.seed(2023)
 for (i in seq_along(gspec)) {
   
   grid <- gspec[[i]]$grid
@@ -37,7 +38,8 @@ for (i in seq_along(gspec)) {
     
     by_args <- c("params1", "n", "adj", "cfd")
   } else by_args <- c("params1", "params2", "n", "adj", "cfd")
-  res[[i]][["smry"]] <- df[, lapply(.SD, mean), by = by_args]
+  res[[i]][["smry"]] <- df[, lapply(.SD, mean, na.rm = TRUE), by = by_args]
+  res[[i]][["smry"]] <- res[[i]][["smry"]][complete.cases(res[[i]][["smry"]])]
   res[[i]][["vis"]] <- vis_prob_id(res[[i]][["smry"]], var_params)
 }
 x <- latex2exp::TeX("my title $\\alpha = \\beta$")
