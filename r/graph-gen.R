@@ -51,11 +51,12 @@ gen_Gnpq <- function(n, p, q) {
   list(adj = A, cfd = B)
 }
 
-gen_scale_free <- function(n, pow, zero_app, directed = TRUE) {
+gen_scale_free <- function(n, m, directed = TRUE) {
   
-  out.seq <- vapply(seq_len(n), function(i) sample.int(i, size = 1), integer(1L))
-  g <- igraph::sample_pa(n, power = pow, zero.appeal = zero_app, 
-                         out.seq = out.seq, directed = directed)
+  # generating the starting graph
+  g0 <- graph_from_adjacency_matrix(adjmatrix = gen_Gnp(2 * m + 1, 1))
+  
+  g <- igraph::sample_pa(n, m = m, start.graph = g0)
   
   if (directed) {
     top.ord <- igraph::topological.sort(g)
@@ -77,9 +78,7 @@ gen_graph <- function(adj = c("Gnp", "unif", "scale_free"),
     adj,
     Gnp = gen_Gnp(params$n, params$p),
     unif = unifDAGfast(params$n),
-    scale_free = gen_scale_free(params$n, params$pow, 
-                                1 # params$zero_app
-                                )
+    scale_free = gen_scale_free(params$n, params$m)
   )
   
   if (cfd == "prunning") {

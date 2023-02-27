@@ -5,7 +5,6 @@ cpp_dir <- file.path(root, "cpp")
 invisible(lapply(list.files(r_dir, full.names = TRUE), source))
 invisible(lapply(list.files(cpp_dir, full.names = TRUE), sourceCpp))
 
-
 # grid experiment
 n_graph <- 10L
 res <- replicate(length(gspec), NULL)

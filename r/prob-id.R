@@ -2,8 +2,13 @@
 prob_id_grid <- function(adj_gen, cfd_gen, grid, nsamp = 10^4) {
   
   grid_df <- expand.grid(grid)
+  
   nparams <- length(grid)
   var_params <- setdiff(names(grid), "n")
+  if (adj_gen == "scale_free") {
+    
+    grid_df <- grid_df[grid_df$m < ((grid_df$n - 1) / 2), ]
+  }
   res <- mclapply(
     seq_len(nrow(grid_df)),
     function(iter) {
@@ -37,6 +42,8 @@ prob_id_grid <- function(adj_gen, cfd_gen, grid, nsamp = 10^4) {
 prob_id_fuzzy <- function(adj_gen, cfd_gen, range, nsamp = 10^4) {
   
   nparams <- length(range)
+  ngraph <- range[["n"]]
+
   res <- mclapply(
     seq_len(nsamp),
     function(i) {
@@ -44,9 +51,13 @@ prob_id_fuzzy <- function(adj_gen, cfd_gen, range, nsamp = 10^4) {
       params <- lapply(
         range, 
         function(r) {
-          
+         
+          if (length(r) == 1) return(r)
           if (length(r) == 2) return(runif(1, min = r[1], max = r[2]))
-          return(r)
+          
+          # special case for the scale-free graphs
+          assert_that(adj_gen == "scale_free")
+          return(sample(r[2 * r + 1 < ngraph], size = 1))
         }
       )
       names(params) <- names(range)
@@ -87,7 +98,7 @@ vis_prob_id <- function(df, var_params_true) {
 }
 
 vis_prob_id_1d <- function(df, var) {
-  # browser()
+
   ggplot(df, aes_string(x = var, y = "value", color = "variable")) +
     geom_line() + geom_point() + theme_bw() +
     ylab("P(identification)") +
@@ -110,7 +121,7 @@ vis_prob_id_2d <- function(df, var1, var2) {
   
   xseq <- as.numeric(attr(contour1, "dimnames")[[1]])
   yseq <- as.numeric(attr(contour1, "dimnames")[[2]])
-
+  
   fig <- plot_ly(scene = paste(adj, cfd, sep = "+"))
   fig <- fig %>% add_surface(z = ~contour2, x = ~xseq, y = ~yseq, 
                              colorscale = list(c(0, 1), c("red", "red")),
@@ -133,6 +144,11 @@ vis_prob_id_2d <- function(df, var1, var2) {
                              opacity = 0.5, showscale = TRUE,
                              name = "ID Algorithm")
   
+  if (adj == "scale_free") {
+    fig <- fig %>% layout(scene = list(xaxis =list(nticks = length(unique(df$m)),
+                                                   range = range(df$m))))
+  }
+  
   fig <- fig %>% layout(
     scene = list(xaxis=list(title = var1),
                  yaxis=list(title = var2),
@@ -144,7 +160,6 @@ vis_prob_id_2d <- function(df, var1, var2) {
 }
 
 # dynamic programming high-level functionality
-
 prob_id_dp <- function(grid) {
   
   df <- expand.grid(grid)

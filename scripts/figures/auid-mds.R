@@ -32,7 +32,7 @@ auid_cov <- function(fspec, nsamp) {
   
   auid$adj <- as.factor(auid$adj)
   levels(auid$adj) <- c(Gnp = latex2exp::TeX("$G(n, p)$"),
-                        scale_free = latex2exp::TeX("$BA(n, a, \\alpha)$"),
+                        scale_free = latex2exp::TeX("$PM(n, m)$"),
                         unif = latex2exp::TeX("Uniform"))
   
   auid$cfd <- as.factor(auid$cfd)
@@ -74,7 +74,7 @@ auid_cov <- function(fspec, nsamp) {
     ) +
     scale_color_discrete(name = "Adjacency",
                          labels = c(Gnp = latex2exp::TeX("$G(n, p)$"),
-                                    scale_free = latex2exp::TeX("$BA(n, a, \\alpha)$"),
+                                    scale_free = latex2exp::TeX("$PM(n, m)$"),
                                     unif = latex2exp::TeX("Uniform"))) +
     scale_linetype_discrete(name = "Confounding",
                             labels = c(Gnq = latex2exp::TeX("$G(n, q)$"),
@@ -84,12 +84,12 @@ auid_cov <- function(fspec, nsamp) {
 }
 
 nsamp <- 10^4
-pgen <- auid_cov(fspec, nsamp)
-ggsave(file.path("paper", "figures", "auid_gen.png"), plot = pgen[[1]],
-       width = 12, height = 8)
-
-ggsave(file.path("paper", "figures", "cov_gen.png"), plot = pgen[[2]],
-       width = 12, height = 8)
+# pgen <- auid_cov(fspec, nsamp)
+# ggsave(file.path("paper", "figures", "auid_gen.png"), plot = pgen[[1]],
+#        width = 12, height = 8)
+# 
+# ggsave(file.path("paper", "figures", "cov_gen.png"), plot = pgen[[2]],
+#        width = 12, height = 8)
 
 pdps <- auid_cov(fspec_dps, nsamp)
 ggsave(file.path("paper", "figures", "auid_dps.png"), plot = pdps[[1]],

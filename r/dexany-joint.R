@@ -98,7 +98,8 @@ pid_backdoor_xy <- function(x, y, p, q) {
 
 jnt_prc <- function(n, p) {
   
-  load(file.path("data", "dexany.rda"))
+  root <- rprojroot::find_root(".git/config")
+  load(file.path(root, "data", "dexany.rda"))
   
   if (is.null(dexany[[as.character(p)]])) {
     
@@ -106,7 +107,7 @@ jnt_prc <- function(n, p) {
     prc_umcn(n, p)
   }
   
-  load(file.path("data", "dexany.rda"))
+  load(file.path(root, "data", "dexany.rda"))
   dp <- dexany[[as.character(p)]]
   
   bin_p <- precalc_bin(p)
@@ -139,9 +140,10 @@ jnt_prc <- function(n, p) {
 
 prc_umcn <- function(n, p) {
   
-  if (file.exists("data/dexany.rda")) {
+  root <- rprojroot::find_root(".git/config")
+  if (file.exists(file.path(root, "data/dexany.rda"))) {
     
-    load("data/dexany.rda")
+    load(file.path(root, "data/dexany.rda"))
     if (!is.null(dexany[[as.character(p)]])) {
       
       return(invisible(TRUE))
@@ -196,6 +198,6 @@ prc_umcn <- function(n, p) {
   }
   
   dexany[[as.character(p)]] <- dp
-  save(dexany, file = "data/dexany.rda")
+  save(dexany, file = file.path(root, "data/dexany.rda"))
   return(invisible(TRUE))
 }

@@ -23,12 +23,12 @@ gspec <- list(
   list(
     adj = "scale_free",
     cfd = "Gnq",
-    grid = list(pow = seq(0.25, 2.75, 0.25), q = seq(0.1, 0.9, 0.1))
+    grid = list(m = seq.int(1, 5, 1), q = seq(0.1, 0.9, 0.1))
   ),
   list(
     adj = "scale_free",
     cfd = "prunning",
-    grid = list(pow = seq(0.25, 2.75, 0.25), q = seq(0.1, 0.9, 0.1))
+    grid = list(m = seq.int(1, 5, 1), q = seq(0.1, 0.9, 0.1))
   )
 )
 
@@ -56,12 +56,12 @@ fspec <- list(
   list(
     adj = "scale_free",
     cfd = "Gnq",
-    grid = list(pow = c(0.5, 3), q = c(0, 1))
+    grid = list(m = seq.int(1, 5, 1), q = c(0, 1))
   ),
   list(
     adj = "scale_free",
     cfd = "prunning",
-    grid = list(pow = c(0.5, 3), q = c(0, 1))
+    grid = list(m = seq.int(1, 5, 1), q = c(0, 1))
   )
 )
 
@@ -91,12 +91,12 @@ fspec_dps <- list(
   list(
     adj = "scale_free",
     cfd = "Gnq",
-    grid = list(pow = c(0.5, 3), q = c(0, 0.2))
+    grid = list(m = seq.int(1, 5, 1), q = c(0, 0.2))
   ),
   list(
     adj = "scale_free",
     cfd = "prunning",
-    grid = list(pow = c(0.5, 3), q = c(0, 0.2))
+    grid = list(m = seq.int(1, 5, 1), q = c(0, 0.2))
   )
 )
 

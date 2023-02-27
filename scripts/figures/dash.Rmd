@@ -32,7 +32,7 @@ for (i in seq_along(gspec)) {
   var_params <- names(grid)
   grid[["n"]] <- n_graph
   df <- prob_id_grid(adj_gen = gspec[[i]]$adj, cfd_gen = gspec[[i]]$cfd, 
-                     grid = grid, nsamp = params$n_samp)
+                     grid = grid, params$n_samp)
   res[[i]][["raw"]] <- df
   if (length(grid) == 2L) {
     
@@ -46,10 +46,17 @@ x <- latex2exp::TeX("my title $\\alpha = \\beta$")
 
 adj_labs <- list(Gnp = latex2exp::TeX("$G(n, p)$"),
                  unif = latex2exp::TeX("Uniform"),
-                 scale_free = latex2exp::TeX("$BA(n, a, \\alpha)$"))
+                 scale_free = latex2exp::TeX("$PM(n, m)$"))
 cfd_labs <- list(Gnq = latex2exp::TeX("$G(n, q)$"),
                         prunning = latex2exp::TeX("IP(q)"))
 ```
+
+<style type="text/css">
+
+.chart-title {  /* chart_title  */
+   font-size: 28px;
+
+</style>
 
 Row
 -------------------------------------
