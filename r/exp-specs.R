@@ -91,12 +91,12 @@ fspec_dps <- list(
   list(
     adj = "scale_free",
     cfd = "Gnq",
-    grid = list(m = seq.int(1, 5, 1), q = c(0, 0.2))
+    grid = list(m = seq.int(2, 5, 1), q = c(0, 0.2))
   ),
   list(
     adj = "scale_free",
     cfd = "prunning",
-    grid = list(m = seq.int(1, 5, 1), q = c(0, 0.2))
+    grid = list(m = seq.int(2, 5, 1), q = c(0, 0.2))
   )
 )
 

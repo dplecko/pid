@@ -57,7 +57,7 @@ prob_id_fuzzy <- function(adj_gen, cfd_gen, range, nsamp = 10^4) {
           
           # special case for the scale-free graphs
           assert_that(adj_gen == "scale_free")
-          return(sample(r[2 * r + 1 < ngraph], size = 1))
+          return(sample(r[2 * r + 1 <= ngraph], size = 1))
         }
       )
       names(params) <- names(range)
@@ -65,7 +65,7 @@ prob_id_fuzzy <- function(adj_gen, cfd_gen, range, nsamp = 10^4) {
       c(pid_single(g), unlist(params))
     }, mc.cores = get_cores()
   )
- 
+
   dt <- data.table(do.call(rbind, res))
   dt <- setnames(dt, names(dt), c("ncon", "b_id", "g_id", 
                                   paste0("params", seq_len(nparams - 1)), "n"))
